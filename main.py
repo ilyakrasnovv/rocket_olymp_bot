@@ -32,7 +32,7 @@ async def write_registration(pid, ptime, pname, pclass):
 
 
 async def get_name(chat_id):
-    await client.send_message(chat_id, "Пришли одним сообщением свою фамилию и имя")
+    await client.send_message(chat_id, "Пришли одним сообщением своё имя и фамилию")
     curstate[chat_id] = ("await_name", "")
 
 
@@ -67,7 +67,7 @@ async def handler(message: Message):
                 await write_registration(sender.id, datetime.datetime.now().strftime("%Y.%m.%d %H:%M"),
                                          curstate[sender.id][1], text)
                 await message.reply(
-                    f"<b>Проверь свои регистрационные данные:\nФамилия Имя:</b> {curstate[sender.id][1]}\n<b>Класс "
+                    f"<b>Проверь свои регистрационные данные:\nИмя Фамилия:</b> {curstate[sender.id][1]}\n<b>Класс "
                     f"обучения и участия:</b> {text}\n\nЕсли что-то не так, то зарегистрируйся заново, написав любое "
                     f"сообщение.\nПеред началом пробного тура мы вышлем сюда адрес и данные для входа в тестирующую "
                     f"систему.",
