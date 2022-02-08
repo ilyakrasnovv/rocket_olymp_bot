@@ -44,9 +44,11 @@ async def get_class(chat_id):
                               buttons=list(map(Button.text, classes)))
     curstate[chat_id] = ("await_class", curstate[chat_id][1])
 
+
 PMS = [708783390, 1639923723, 393567271]
 
-@client.on(events.NewMessage(pattern='.*'))
+
+@client.on(events.NewMessage(pattern='.+'))
 async def handler(message: Message):
     sender = await message.get_sender()
     if message.text == "/send_final_csv" and sender.id in PMS:
@@ -72,8 +74,8 @@ async def handler(message: Message):
                     buttons=Button.clear())
                 for ppl in PMS:
                     await client.send_message(ppl, "Новая регистрация: " + " ".join(
-                    [str(sender.id), datetime.datetime.now().strftime("%Y.%m.%d %H:%M"),
-                     curstate[sender.id][1], text]))
+                        [str(sender.id), datetime.datetime.now().strftime("%Y.%m.%d %H:%M"),
+                         curstate[sender.id][1], text]))
                 curstate.pop(sender.id)
 
             else:
@@ -92,4 +94,3 @@ try:
     client.run_until_disconnected()
 finally:
     client.disconnect()
-
