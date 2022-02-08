@@ -44,17 +44,15 @@ async def get_class(chat_id):
                               buttons=list(map(Button.text, classes)))
     curstate[chat_id] = ("await_class", curstate[chat_id][1])
 
-
-ILYA = 708783390
-
+PMS = [708783390, 1639923723, 393567271]
 
 @client.on(events.NewMessage(pattern='.*'))
 async def handler(message: Message):
     sender = await message.get_sender()
-    if message.text == "/send_final_csv" and sender.id == ILYA:
+    if message.text == "/send_final_csv" and sender.id in PMS:
         await format_registrations()
         await client.send_file(sender.id, "final_reg_form.csv")
-    elif message.text == "/send_csv" and sender.id == ILYA:
+    elif message.text == "/send_csv" and sender.id in PMS:
         await client.send_file(sender.id, "reg_form.csv")
     elif sender.id in curstate:
         state = curstate[sender.id][0]
@@ -72,7 +70,8 @@ async def handler(message: Message):
                     f"сообщение.\nПеред началом пробного тура мы вышлем сюда адрес и данные для входа в тестирующую "
                     f"систему.",
                     buttons=Button.clear())
-                await client.send_message(ILYA, "Новая регистрация: " + " ".join(
+                for ppl in PMS:
+                    await client.send_message(ppl, "Новая регистрация: " + " ".join(
                     [str(sender.id), datetime.datetime.now().strftime("%Y.%m.%d %H:%M"),
                      curstate[sender.id][1], text]))
                 curstate.pop(sender.id)
